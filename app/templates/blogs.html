@@ -1,8 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    Блоги
+
+{% endblock %}
+
+
+{% block content %}
+
 <html>
-    <head>
-        <meta http-equiv="content-type" charset="utf-8">
-        <title>Блоги</title>
-    </head>
     <body>
         <h1>Блоги</h1>
         <table border="1" cellpadding="10" bgcolor="#CCCCCC">
@@ -17,6 +24,7 @@
                 <td>26.05.2021</td>
             </tr>
         </table>
-        <p><a href="/">Главная страница</a></p>
     </body>
 </html>
+
+{% endblock %}
