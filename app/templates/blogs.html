@@ -23,7 +23,15 @@
                 <td>Изучаем html</td>
                 <td>26.05.2021</td>
             </tr>
+            {% for post in posts %}
+                <tr>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.title }}</td>
+                    <td>{{ post.created }}</td>
+                </tr>
+            {% endfor %}
         </table>
+    <a href="/create_blog">Создать свой блог</a>
     </body>
 </html>
 
