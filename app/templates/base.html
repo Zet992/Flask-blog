@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <meta charset="UTF-8">
     <title>
         {% block title %}
@@ -8,10 +9,28 @@
     </title>
 </head>
 <body>
-    <h4><a href="/">Главная страница</a></h4>
-    {% block content %}
-    {% endblock %}
-    <hr>
-    <p>Все авторские права соблюдены</p>
+    <header>
+        <div class="container">
+            <nav>
+            <ul>
+                <li><a href="/" class="menu">Главная</a></li>
+                <li><a href="/blogs" class="menu">Блоги</a></li>
+                <li><a href="/login" class="login">Войти</a></li>
+            </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="main">
+        <div class="container">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+    <footer>
+        <div class="container">
+            <hr>
+            <p class="end">Все авторские права соблюдены</p>
+        </div>
+    </footer>
 </body>
 </html>

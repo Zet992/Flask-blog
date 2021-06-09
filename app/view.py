@@ -20,7 +20,7 @@ def blogs():
     return render_template("blogs.html", posts=posts)
 
 
-@app.route("/<slug>")
+@app.route("/blogs/<slug>")
 def post_detail(slug):
     post = Post.query.filter(Post.slug==slug).first()
     return render_template("detail.html", post=post)

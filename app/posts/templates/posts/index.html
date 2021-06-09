@@ -1,15 +1,19 @@
 {% extends 'base.html' %}
 
+
 {% block title %}
     Создание блога
 {% endblock %}
 
-
 {% block content %}
+    <head>
+    <link rel="stylesheet" href="{{ url_for('posts.static', filename='style.css') }}">
+    </head>
     <body>
         <h1>Создание страницы</h1>
         <form>
             <p><input type="text"></p>
+            <p><textarea type="text"></textarea></p>
             <p><button type="submit">Опубликовать</button></p>
         </form>
     </body>

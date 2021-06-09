@@ -25,3 +25,15 @@ class Post(db.Model):
 
     def __repr__(self):
         return f"<Post id: {self.id}, title: {self.title}>"
+
+
+class Tag(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(140))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(args, kwargs)
+        self.slug = slugify(self.name)
+
+    def __repr__(self):
+        return f"Tag id: {self.id}, name: {self.name}"
