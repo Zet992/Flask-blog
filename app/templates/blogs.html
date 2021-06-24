@@ -15,7 +15,7 @@
         <table border="1" cellpadding="10">
             <tr>
                 <th>Название</th>
-                <th>Описание</th>
+                <th>Теги</th>
                 <th>Дата публикации</th>
             </tr>
             {% for post in posts %}
@@ -23,7 +23,12 @@
                     <td><a href={{"blogs/" + post.slug}} class="blogs">
                         {{ post.title }}
                     </a></td>
-                    <td>{{ post.title }}</td>
+                    <td>
+                        {% for tag in post.tags[:-1] %}
+                            {{ tag.name }},
+                        {% endfor %}
+                        {{ post.tags[-1].name }}
+                    </td>
                     <td>{{ post.created }}</td>
                 </tr>
             {% endfor %}
