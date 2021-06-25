@@ -8,9 +8,8 @@
 {% block content %}
     <h1>{{ post.title }}</h1>
     Теги:<br>
-    {% for tag in post.tags[:-1] %}
-    <a href={{ "/blogs/tag/" + tag.name }}>{{ tag.name }}</a>,
+    {% for tag in post.tags %}
+    <a href="{{ "/blogs/tag/" + tag.name }}">{{ tag.name }}</a>
     {% endfor %}
-    <a href={{ "/blogs/tag/" + post.tags[-1].name }}>{{ post.tags[-1].name }}</a>
     <p>{{ post.body }}</p>
 {% endblock %}

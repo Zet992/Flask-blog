@@ -8,13 +8,20 @@
         {% endblock %}
     </title>
 </head>
-<body>
+<body class="background">
     <header>
         <div class="container">
             <nav>
             <ul>
                 <li><a href="/" class="menu">Главная</a></li>
                 <li><a href="/blogs" class="menu">Блоги</a></li>
+                <li>
+                    <form class="search" method="GET">
+                        <input name="search" type="search" placeholder="Поиск"
+                               value={{ request.args.get("search", "") }}>
+                        <button>Найти Блог</button>
+                    </form>
+                </li>
                 <li><a href="/login" class="login">Войти</a></li>
             </ul>
             </nav>

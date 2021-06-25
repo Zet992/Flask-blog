@@ -94,3 +94,17 @@ a.blogs:hover {
   text-decoration: underline;
   background: none;
 }
+form.search {
+  display: inline-block;
+  line-height: 59px;
+  color: white;
+  font-weight: 900;
+  text-decoration: none;
+  user-select: none;
+  padding: .5em 2em;
+  transition: 0.2s;
+  background: rgb(0, 0, 0);
+}
+body.background {
+  background-color: rgb(50, 50, 50);
+}

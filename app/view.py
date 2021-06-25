@@ -1,6 +1,7 @@
-from app import app
-from flask import render_template
+from flask import render_template, request
+
 from models import Post, Tag
+from app import app
 
 
 @app.route("/")
@@ -16,7 +17,14 @@ def login():
 
 @app.route("/blogs")
 def blogs():
-    posts = Post.query.all()
+    search = request.args.get("search")
+
+    if search is not None:
+        posts = Post.query.filter(Post.title.contains(search) |
+                                  Post.body.contains(search)).all()
+    else:
+        posts = Post.query.order_by(Post.id.desc())
+
     return render_template("blogs.html", posts=posts)
 
 
