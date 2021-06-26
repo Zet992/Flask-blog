@@ -38,9 +38,9 @@
             <ul>
                 <li>
                     {% if pages.has_prev %}
-                    <a href="?page={{ pages.prev_num }}">Previous</a>
+                        <a href="?page={{ pages.prev_num }}">Previous</a>
                     {% else %}
-                    Previous
+                        Previous
                     {% endif %}
                 </li>
 
@@ -58,9 +58,9 @@
 
                 <li>
                     {% if pages.has_next %}
-                    <a href="?page={{ pages.next_num }}">Next</a>
+                        <a href="?page={{ pages.next_num }}">Next</a>
                     {% else %}
-                    Next
+                        Next
                     {% endif %}
                 </li>
             </ul>
