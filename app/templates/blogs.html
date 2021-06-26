@@ -12,13 +12,14 @@
 <html>
     <body>
         <h1>Блоги</h1>
+
         <table border="1" cellpadding="10">
             <tr>
                 <th>Название</th>
                 <th>Теги</th>
                 <th>Дата публикации</th>
             </tr>
-            {% for post in posts %}
+            {% for post in pages.items %}
                 <tr>
                     <td><a href={{"blogs/" + post.slug}} class="blogs">
                         {{ post.title }}
@@ -32,7 +33,39 @@
                 </tr>
             {% endfor %}
         </table>
-    <a href="/create_blog" class="create_blog">Создать свой блог</a>
+
+        <nav>
+            <ul>
+                <li>
+                    {% if pages.has_prev %}
+                    <a href="?page={{ pages.prev_num }}">Previous</a>
+                    {% else %}
+                    Previous
+                    {% endif %}
+                </li>
+
+                {% for page in pages.iter_pages() %}
+
+                    <li>
+                        {% if pages.page != page %}
+                        <a href="?page={{ page }}">{{ page }}</a>
+                        {% else %}
+                        {{ page }}
+                        {% endif %}
+                    </li>
+
+                {% endfor %}
+
+                <li>
+                    {% if pages.has_next %}
+                    <a href="?page={{ pages.next_num }}">Next</a>
+                    {% else %}
+                    Next
+                    {% endif %}
+                </li>
+            </ul>
+        </nav>
+        <a href="/create_blog" class="create_blog">Создать свой блог</a>
     </body>
 </html>
 

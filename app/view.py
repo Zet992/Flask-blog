@@ -19,13 +19,23 @@ def login():
 def blogs():
     search = request.args.get("search")
 
+    page = request.args.get('page')
+
+    if page and page.isdigit() and int(page) > 0:
+        page = int(page)
+    else:
+        page = 1
+
     if search is not None:
         posts = Post.query.filter(Post.title.contains(search) |
-                                  Post.body.contains(search)).all()
+                                  Post.body.contains(search))
+        posts = posts.order_by(Post.id.desc())
     else:
         posts = Post.query.order_by(Post.id.desc())
 
-    return render_template("blogs.html", posts=posts)
+    pages = posts.paginate(page=page, per_page=4)
+
+    return render_template("blogs.html", pages=pages)
 
 
 @app.route("/blogs/<slug>")
