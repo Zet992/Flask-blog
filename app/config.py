@@ -3,3 +3,4 @@ class Configuration:
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SQLALCHEMY_DATABASE_URI = "mysql+pymysql://root:root@localhost/flaskdata"
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
+    SECRET_KEY = "secret key"

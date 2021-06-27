@@ -7,8 +7,7 @@ from app import app, db
 
 @app.route("/")
 def home_page():
-    name = "Ivan"
-    return render_template("home_page.html", name=name)
+    return render_template("home_page.html")
 
 
 @app.route("/login")
