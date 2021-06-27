@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit post
+{% endblock %}
+
+{% block content %}
+    <head>
+        <link rel="stylesheet" href="{{ url_for('posts.static', filename='bootstrap.css') }}">
+    </head>
+    <h1>Edit post</h1>
+    <form action="{{ url_for('edit_post', slug=post.slug) }}" method="POST">
+        {% for field in form %}
+            <div class="form-group">
+                {{ field.label() }}
+                {{ field(class='form-control') }}
+            </div>
+        {% endfor %}
+        <button type="submit" class="create">Опубликовать</button>
+    </form>
+{% endblock %}

@@ -1,7 +1,8 @@
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 
 from models import Post, Tag
-from app import app
+from posts.blueprint import PostForm
+from app import app, db
 
 
 @app.route("/")
@@ -49,3 +50,18 @@ def tag_detail(name):
     tag = Tag.query.filter(Tag.name==name).first()
     posts = tag.posts.all()
     return render_template("tag_view.html", tag=tag, posts=posts)
+
+
+@app.route("/blogs/<slug>/edit", methods=["POST", "GET"])
+def edit_post(slug):
+    post = Post.query.filter(Post.slug==slug).first()
+
+    if request.method == "POST":
+        form = PostForm(formdata=request.form, obj=post)
+        form.populate_obj(post)
+        db.session.commit()
+
+        return redirect(url_for("post_detail", slug=post.slug))
+
+    form = PostForm(obj=post)
+    return render_template("edit_post.html", post=post, form=form)

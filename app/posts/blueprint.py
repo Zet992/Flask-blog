@@ -34,7 +34,6 @@ def index():
 
             return redirect(url_for("blogs"))
 
-
     return render_template("posts/index.html")
 
 
