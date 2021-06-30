@@ -3,6 +3,7 @@ from flask import render_template
 from flask import request
 from flask import redirect, url_for
 from wtforms import Form, StringField, TextAreaField
+from flask_security import login_required
 
 from app import db
 from models import Post
@@ -19,6 +20,7 @@ class PostForm(Form):
 
 
 @posts.route("/", methods=["POST", "GET"])
+@login_required
 def index():
     if request.method == "POST":
         print(request.form)
@@ -38,6 +40,7 @@ def index():
 
 
 @posts.route("/1", methods=["POST", "GET"])
+@login_required
 def create_post():
     if request.method == "POST":
         title = request.form.get("title")

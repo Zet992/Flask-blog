@@ -18,11 +18,18 @@
                 <li>
                     <form class="search" method="GET">
                         <input name="search" type="search" placeholder="Поиск"
-                               value={{ request.args.get("search", "") }}>
+                               value="{{ request.args.get('search', '') }}">
                         <button>Найти Блог</button>
                     </form>
                 </li>
-                <li><a href="/login" class="login">Войти</a></li>
+                {% if current_user.has_role('admin') %}
+                    <li><a href="/admin" class="menu">Админ</a></li>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                    <li><a href="/logout" class="login">Выйти</a></li>
+                {% else %}
+                    <li><a href="/login" class="login">Войти</a></li>
+                {% endif %}
             </ul>
             </nav>
         </div>
