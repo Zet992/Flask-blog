@@ -13,22 +13,25 @@
         <div class="container">
             <nav>
             <ul>
-                <li><a href="/" class="menu">Главная</a></li>
-                <li><a href="/blogs" class="menu">Блоги</a></li>
+                <li><a href="/" class="menu">Home Page</a></li>
+                <li><a href="/blogs" class="menu">Blogs</a></li>
                 <li>
                     <form class="search" method="GET">
-                        <input name="search" type="search" placeholder="Поиск"
+                        <input name="search" type="search" placeholder="Search"
                                value="{{ request.args.get('search', '') }}">
-                        <button>Найти Блог</button>
+                        <button>Search Blog</button>
                     </form>
                 </li>
                 {% if current_user.has_role('admin') %}
-                    <li><a href="/admin" class="menu">Админ</a></li>
+                    <li><a href="/admin" class="menu">Admin</a></li>
                 {% endif %}
                 {% if current_user.is_authenticated %}
-                    <li><a href="/logout" class="login">Выйти</a></li>
+                    <li><a href="/logout" class="login">Log Out</a></li>
+                    <li><a href="/users/{{ current_user.slug }}"
+                           class="login"
+                           style="margin-right:3px">Profile</a></li>
                 {% else %}
-                    <li><a href="/login" class="login">Войти</a></li>
+                    <li><a href="/login" class="login">Log In</a></li>
                 {% endif %}
             </ul>
             </nav>
@@ -43,7 +46,7 @@
     <footer>
         <div class="container">
             <hr>
-            <p class="end">Все авторские права соблюдены</p>
+            <p class="end">All copyrights reserved</p>
         </div>
     </footer>
 </body>

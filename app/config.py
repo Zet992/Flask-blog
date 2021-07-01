@@ -7,3 +7,6 @@ class Configuration:
 
     SECURITY_PASSWORD_SALT = "salt"
     SECURITY_PASSWORD_HASH = "sha512_crypt"
+
+    UPLOAD_FOLDER = "app/static/profile_images/"
+    MAX_CONTENT_LENGTH = 16 * 1024 * 1024

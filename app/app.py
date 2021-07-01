@@ -66,3 +66,11 @@ admin.add_view(AdminView(Role, db.session))
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
 security = Security(app, user_datastore)
+
+ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
+
+
+def allowed_file(filename):
+    if "." in filename:
+        if filename.split(".")[1].lower() in ALLOWED_EXTENSIONS:
+            return True

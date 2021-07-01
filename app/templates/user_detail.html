@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Profile
+{% endblock %}
+
+{% block content %}
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
+    </head>
+    <h1>Profile of user {{ user.name }}</h1>
+    <div class="profile_image">
+        <img src="{{ url_for('static',
+        filename='profile_images/' + user.profile_image) }}"
+             alt="profile_image"
+             width="180"
+             height="180">
+        <br>
+        {% if current_user.slug == user.slug %}
+        Change profile image
+        <form enctype="multipart/form-data" method="POST">
+            <input type="file" name="file">
+            <input type="submit" value="Change">
+        </form>
+        {% endif %}
+        {% for message in get_flashed_messages() %}
+            {{ message }}
+        {% endfor %}
+    </div>
+    <div class="roles">
+        <p>
+            Roles:
+        {% for role in user.roles %}
+            {{ role.name + ' ' }}
+        {% endfor %}
+        </p>
+    </div>
+{% endblock %}

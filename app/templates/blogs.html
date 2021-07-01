@@ -2,7 +2,7 @@
 
 {% block title %}
 
-    Блоги
+    Blogs
 
 {% endblock %}
 
@@ -11,13 +11,13 @@
 
 <html>
     <body>
-        <h1>Блоги</h1>
+        <h1>Blogs</h1>
 
         <table border="1" cellpadding="10">
             <tr>
-                <th>Название</th>
-                <th>Теги</th>
-                <th>Дата публикации</th>
+                <th>Name</th>
+                <th>Tags</th>
+                <th>Date of creation</th>
             </tr>
             {% for post in pages.items %}
                 <tr>
@@ -65,7 +65,9 @@
                 </li>
             </ul>
         </nav>
-        <a href="/create_blog" class="create_blog">Создать свой блог</a>
+        {% if current_user.has_role('admin') %}
+        <a href="/create_blog" class="create_blog">Create_blog</a>
+        {% endif %}
     </body>
 </html>
 

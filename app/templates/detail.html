@@ -7,9 +7,9 @@
 
 {% block content %}
     <h1>{{ post.title }}</h1>
-    Теги:<br>
+    Tags:<br>
     {% for tag in post.tags %}
-    <a href="{{ "/blogs/tag/" + tag.name }}">{{ tag.name }}</a>
+    <a href="{{ '/blogs/tag/' + tag.name }}">{{ tag.name }}</a>
     {% endfor %}
     <p>{{ post.body }}</p>
 {% endblock %}

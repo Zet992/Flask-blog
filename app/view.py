@@ -1,9 +1,12 @@
-from flask import render_template, request, redirect, url_for
-from flask_security import login_required
+import os
 
-from models import Post, Tag
+from flask import render_template, request, redirect, url_for, flash
+from flask_security import login_required
+from werkzeug.utils import secure_filename
+
+from models import Post, Tag, User
 from posts.blueprint import PostForm
-from app import app, db
+from app import app, db, allowed_file
 
 
 @app.route("/")
@@ -43,6 +46,27 @@ def blogs():
 def post_detail(slug):
     post = Post.query.filter(Post.slug==slug).first_or_404()
     return render_template("detail.html", post=post)
+
+
+@app.route("/users/<slug>", methods=["GET", "POST"])
+def user_detail(slug):
+    user = User.query.filter(User.slug == slug).first_or_404()
+    if request.method == "POST":
+        if "file" not in request.files:
+            flash("No file part")
+            return redirect(request.url)
+        file = request.files["file"]
+        if file.filename == "":
+            flash("No selected file")
+            return redirect(request.url)
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            user.profile_image = filename
+            db.session.commit()
+
+    filename = os.path.join(app.config["UPLOAD_FOLDER"], user.profile_image)
+    return render_template("user_detail.html", user=user, filename=filename)
 
 
 @app.route("/blogs/tag/<name>")

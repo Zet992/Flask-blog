@@ -50,8 +50,8 @@ class Tag(db.Model):
         self.slug = slugify(self.name)
 
     def generate_slug(self):
-        if self.title:
-            self.slug = slugify(self.title)
+        if self.name:
+            self.slug = slugify(self.name)
 
     def __repr__(self):
         return f"Tag id: {self.id}, name: {self.name}"
@@ -74,14 +74,15 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     roles = db.relationship("Role", secondary=roles_users,
                             backref=db.backref("users", lazy="dynamic"))
+    profile_image = db.Column(db.String(140), default="default.png")
 
     def __init__(self, *args, **kwargs):
         super(User, self).__init__(*args, **kwargs)
         self.slug = slugify(self.name)
 
     def generate_slug(self):
-        if self.title:
-            self.slug = slugify(self.title)
+        if self.name:
+            self.slug = slugify(self.name)
 
     def __repr__(self):
         return f"User id: {self.id}, name: {self.name}"
