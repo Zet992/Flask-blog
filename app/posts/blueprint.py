@@ -23,7 +23,6 @@ class PostForm(Form):
 @login_required
 def index():
     if request.method == "POST":
-        print(request.form)
         title = request.form.get("title")
         body = request.form.get("body")
         if title is not None and body is not None:

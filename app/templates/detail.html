@@ -11,5 +11,19 @@
     {% for tag in post.tags %}
     <a href="{{ '/blogs/tag/' + tag.name }}">{{ tag.name }}</a>
     {% endfor %}
+    <h2>Body</h2>
     <p>{{ post.body }}</p>
+    <h2>Comments</h2>
+    {% if current_user.is_authenticated %}
+    <form action="http://localhost:5000/blogs/{{ post.slug }}" method="POST">
+        <p><textarea class="comment" name="body"></textarea></p>
+        <p><button type="submit" class="create">Опубликовать</button></p>
+    </form>
+    {% endif %}
+    {% for comment in post.comments %}
+        <div class="comment">
+            <h3>{{ comment.users[0].name }}</h3>
+            {{ comment.body }}
+        </div>
+    {% endfor %}
 {% endblock %}

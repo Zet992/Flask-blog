@@ -1,10 +1,10 @@
 import os
 
 from flask import render_template, request, redirect, url_for, flash
-from flask_security import login_required
+from flask_security import login_required, current_user
 from werkzeug.utils import secure_filename
 
-from models import Post, Tag, User
+from models import Post, Tag, User, Comment
 from posts.blueprint import PostForm
 from app import app, db, allowed_file
 
@@ -12,11 +12,6 @@ from app import app, db, allowed_file
 @app.route("/")
 def home_page():
     return render_template("home_page.html")
-
-
-@app.route("/login")
-def login():
-    return render_template("login.html")
 
 
 @app.route("/blogs")
@@ -42,9 +37,26 @@ def blogs():
     return render_template("blogs.html", pages=pages)
 
 
-@app.route("/blogs/<slug>")
+@app.route("/blogs/<slug>", methods=["GET", "POST"])
 def post_detail(slug):
     post = Post.query.filter(Post.slug==slug).first_or_404()
+    if request.method == "POST":
+        body = request.form.get("body")
+        if body is not None:
+            if current_user.is_authenticated:
+                try:
+                    comment = Comment(body=body)
+                    user = (User
+                            .query
+                            .filter(User.slug==current_user.slug).first())
+                    user.comments.append(comment)
+                    post.comments.append(comment)
+                    db.session.add(comment)
+                    db.session.commit()
+                except Exception as err:
+                    print(err)
+            else:
+                flash("You are not authenticated")
     return render_template("detail.html", post=post)
 
 

@@ -17,6 +17,12 @@ post_tags = db.Table("post_tags",
                      db.Column("tag_id", db.Integer,
                                db.ForeignKey("tag.id"))
                      )
+post_comments = db.Table("post_comments",
+                         db.Column("post_id", db.Integer,
+                                   db.ForeignKey("post.id")),
+                         db.Column("comment_id", db.Integer,
+                                   db.ForeignKey("comment.id"))
+                         )
 
 
 class Post(db.Model):
@@ -25,6 +31,8 @@ class Post(db.Model):
     body = db.Column(db.Text)
     slug = db.Column(db.String(140), unique=True)
     created = db.Column(db.DateTime, default=datetime.now())
+    comments = db.relationship("Comment", secondary=post_comments,
+                               backref=db.backref("posts", lazy="dynamic"))
 
     def __init__(self, *args, **kwargs):
         super(Post, self).__init__(*args, **kwargs)
@@ -63,6 +71,13 @@ roles_users = db.Table("roles_users",
                        db.Column("role_id", db.Integer(),
                                  db.ForeignKey("role.id"))
                        )
+comments_users = db.Table("comments_users",
+                       db.Column("user_id", db.Integer(),
+                                 db.ForeignKey("user.id")),
+                       db.Column("comment_id", db.Integer(),
+                                 db.ForeignKey("comment.id"))
+                       )
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer(), primary_key=True)
@@ -74,7 +89,10 @@ class User(db.Model, UserMixin):
     active = db.Column(db.Boolean())
     roles = db.relationship("Role", secondary=roles_users,
                             backref=db.backref("users", lazy="dynamic"))
+    comments = db.relationship("Comment", secondary=comments_users,
+                               backref=db.backref("users", lazy="dynamic"))
     profile_image = db.Column(db.String(140), default="default.png")
+    rating = db.Column(db.Integer(), default=0)
 
     def __init__(self, *args, **kwargs):
         super(User, self).__init__(*args, **kwargs)
@@ -95,3 +113,13 @@ class Role(db.Model, UserMixin):
 
     def __repr__(self):
         return f"Role id: {self.id}, name: {self.name}"
+
+
+class Comment(db.Model):
+    id = db.Column(db.Integer(), primary_key=True)
+    body = db.Column(db.Text)
+    rating = db.Column(db.Integer(), default=0)
+    created = db.Column(db.DateTime, default=datetime.now())
+
+    def __repr__(self):
+        return f"Comment id: {self.id} rating: {self.rating}"

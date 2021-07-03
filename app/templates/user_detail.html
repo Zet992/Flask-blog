@@ -8,7 +8,7 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
     </head>
-    <h1>Profile of user {{ user.name }}</h1>
+    <h1>{{ user.name }}</h1>
     <div class="profile_image">
         <img src="{{ url_for('static',
         filename='profile_images/' + user.profile_image) }}"
@@ -17,17 +17,20 @@
              height="180">
         <br>
         {% if current_user.slug == user.slug %}
-        Change profile image
+        <h3>Change profile image</h3>
         <form enctype="multipart/form-data" method="POST">
-            <input type="file" name="file">
-            <input type="submit" value="Change">
+            <label id="choose_file">
+                <input type="file" name="file">
+                Upload Image
+            </label>
+            <input type="submit" value="Change" id="change">
         </form>
         {% endif %}
         {% for message in get_flashed_messages() %}
             {{ message }}
         {% endfor %}
     </div>
-    <div class="roles">
+    <div class="description">
         <p>
             Roles:
         {% for role in user.roles %}

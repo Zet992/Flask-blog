@@ -9,6 +9,10 @@ from flask_admin.contrib.sqla import ModelView
 
 from flask_security import SQLAlchemyUserDatastore
 from flask_security import Security, current_user
+from flask_security.forms import RegisterForm
+
+from wtforms import StringField
+from wtforms.validators import DataRequired
 
 from config import Configuration
 
@@ -21,7 +25,7 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 manager = Manager(app)
 
-from models import Post, Tag, User, Role
+from models import Post, Tag, User, Role, Comment
 
 
 class AdminMixin:
@@ -58,14 +62,24 @@ class UserAdminView(AdminMixin, BaseModelView):
     form_columns = ["name", "password", "email", "roles"]
 
 
+class CommentAdminView(AdminMixin, BaseModelView):
+    form_columns = ["body"]
+
+
+class ExtendedRegisterForm(RegisterForm):
+    name = StringField("Name", [DataRequired()])
+
+
 admin = Admin(app, "FlaskApp", url="/", index_view=HomeAdminView(name="Home"))
 admin.add_view(PostAdminView(Post, db.session))
 admin.add_view(TagAdminView(Tag, db.session))
 admin.add_view(UserAdminView(User, db.session))
 admin.add_view(AdminView(Role, db.session))
+admin.add_view(CommentAdminView(Comment, db.session))
 
 user_datastore = SQLAlchemyUserDatastore(db, User, Role)
-security = Security(app, user_datastore)
+security = Security(app, user_datastore,
+                    register_form=ExtendedRegisterForm)
 
 ALLOWED_EXTENSIONS = {"jpg", "jpeg", "png"}
 
