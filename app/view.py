@@ -41,22 +41,70 @@ def blogs():
 def post_detail(slug):
     post = Post.query.filter(Post.slug==slug).first_or_404()
     if request.method == "POST":
+        if not current_user.is_authenticated:
+            flash("You are not authenticated")
+            return render_template("detail.html", post=post)
+
+        user = User.query.filter(User.id==current_user.id).first()
         body = request.form.get("body")
+        like_id = request.form.get("like")
+        dislike_id = request.form.get("dislike")
+
         if body is not None:
-            if current_user.is_authenticated:
+            try:
+                comment = Comment(body=body)
+                user.comments.append(comment)
+                post.comments.append(comment)
+                db.session.add(comment)
+                db.session.commit()
+            except Exception as err:
+                print(err)
+
+        else:
+            if like_id is not None:
                 try:
-                    comment = Comment(body=body)
-                    user = (User
-                            .query
-                            .filter(User.slug==current_user.slug).first())
-                    user.comments.append(comment)
-                    post.comments.append(comment)
-                    db.session.add(comment)
+                    comment = (Comment
+                               .query
+                               .filter(Comment.id == int(like_id)).first())
+                    author = comment.users[0]
+
+                    if user in comment.liked_users:
+                        flash("You have liked")
+                        return render_template("detail.html", post=post)
+
+                    author.rating += 1
+                    comment.rating += 1
+                    comment.liked_users.append(user)
+                    if user in comment.disliked_users:
+                        author.rating += 1
+                        comment.rating += 1
+                        comment.disliked_users.remove(user)
                     db.session.commit()
                 except Exception as err:
                     print(err)
-            else:
-                flash("You are not authenticated")
+
+            elif dislike_id is not None:
+                try:
+                    comment = (Comment
+                               .query
+                               .filter(Comment.id == int(dislike_id)).first())
+                    author = comment.users[0]
+
+                    if user in comment.disliked_users:
+                        flash("You have disliked")
+                        return render_template("detail.html", post=post)
+
+                    author.rating -= 1
+                    comment.rating -= 1
+                    comment.disliked_users.append(user)
+                    if user in comment.liked_users:
+                        author.rating -= 1
+                        comment.rating -= 1
+                        comment.liked_users.remove(user)
+                    db.session.commit()
+                except Exception as err:
+                    print(err)
+
     return render_template("detail.html", post=post)
 
 

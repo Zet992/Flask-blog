@@ -77,6 +77,18 @@ comments_users = db.Table("comments_users",
                        db.Column("comment_id", db.Integer(),
                                  db.ForeignKey("comment.id"))
                        )
+comments_disliked_users = db.Table("comment_disliked_users",
+                                   db.Column("user_id", db.Integer(),
+                                             db.ForeignKey("user.id")),
+                                   db.Column("comment_id", db.Integer(),
+                                             db.ForeignKey("comment.id"))
+                                   )
+comments_liked_users = db.Table("comment_liked_users",
+                                   db.Column("user_id", db.Integer(),
+                                             db.ForeignKey("user.id")),
+                                   db.Column("comment_id", db.Integer(),
+                                             db.ForeignKey("comment.id"))
+                                   )
 
 
 class User(db.Model, UserMixin):
@@ -120,6 +132,12 @@ class Comment(db.Model):
     body = db.Column(db.Text)
     rating = db.Column(db.Integer(), default=0)
     created = db.Column(db.DateTime, default=datetime.now())
+    disliked_users = db.relationship("User", secondary=comments_disliked_users,
+                               backref=db.backref("disliked_comments",
+                                                  lazy="dynamic"))
+    liked_users = db.relationship("User", secondary=comments_liked_users,
+                               backref=db.backref("liked_comments",
+                                                  lazy="dynamic"))
 
     def __repr__(self):
         return f"Comment id: {self.id} rating: {self.rating}"
