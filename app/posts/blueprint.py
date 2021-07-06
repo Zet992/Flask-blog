@@ -25,7 +25,7 @@ def index():
     if request.method == "POST":
         title = request.form.get("title")
         body = request.form.get("body")
-        if title is not None and body is not None:
+        if title and body:
             try:
                 post = Post(title=title, body=body)
                 db.session.add(post)
@@ -44,7 +44,7 @@ def create_post():
     if request.method == "POST":
         title = request.form.get("title")
         body = request.form.get("body")
-        if title is not None and body is not None:
+        if title and body:
             try:
                 post = Post(title=title, body=body)
                 db.session.add(post)

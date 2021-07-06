@@ -34,6 +34,10 @@ def blogs():
 
     pages = posts.paginate(page=page, per_page=4)
 
+    for post in pages.items:
+        if len(post.body.strip()) > 370:
+            post.body = post.body[:370] + "..."
+
     return render_template("blogs.html", pages=pages)
 
 
@@ -50,7 +54,7 @@ def post_detail(slug):
         like_id = request.form.get("like")
         dislike_id = request.form.get("dislike")
 
-        if body is not None:
+        if body:
             try:
                 comment = Comment(body=body)
                 user.comments.append(comment)

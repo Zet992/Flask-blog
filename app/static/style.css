@@ -140,6 +140,37 @@ div.comment {
   border-bottom-width: 1px;
   padding: 10px;
 }
+div.profile_image {
+  width: 25%;
+  display: inline-block;
+}
+div.description {
+  width: 75%;
+  float: right;
+}
+div.post {
+  width: 80%;
+  height: 100px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: rgb(0, 10, 15);
+  background-color: rgb(0, 20, 30);
+  margin: 15px;
+  padding: 10px;
+}
+div.post_title_body {
+  display: inline-block;
+  width: 60%;
+}
+div.post_tags_creation {
+  position: relative;
+  float: right;
+  width: 30%;
+}
+div.post_creation {
+  position: absolute;
+  top: 80px;
+}
 body.background {
   background-color: rgb(50, 50, 50);
 }
@@ -159,4 +190,45 @@ textarea.comment {
   height:250px;
   padding:12px 20px;
   resize:none
+}
+label#choose_file {
+  display: block;
+  width: 180px;
+  border: solid;
+  border-width: 1px;
+  border-color: rgb(150, 150, 150);
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #eeeeee;
+  font-weight: 550;
+  font-size: 15px;
+  background-color: rgb(0, 0, 0);
+  padding: 7px;
+}
+input[type="file"] {
+  display: none;
+}
+input#change {
+  display: block;
+  width: 150px;
+  height: 30px;
+  border: solid;
+  border-width: 1px;
+  border-color: rgb(150, 150, 150);
+  text-align: center;
+  cursor: pointer;
+  text-transform: uppercase;
+  color: #eeeeee;
+  font-weight: 550;
+  font-size: 15px;
+  background-color: rgb(0, 0, 0);
+  padding: 15px
+  margin: 0 auto;
+  margin-top: 10px;
+}
+img.profile_image {
+  border-style: solid;
+  border-width: 3px;
+  border-color: rgb(150, 150, 150);
 }

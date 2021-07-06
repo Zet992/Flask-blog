@@ -5,12 +5,9 @@
 {% endblock %}
 
 {% block content %}
-    <head>
-        <link rel="stylesheet" href="{{ url_for('static', filename='profile.css') }}">
-    </head>
     <h1>{{ user.name }}</h1>
     <div class="profile_image">
-        <img src="{{ url_for('static',
+        <img class="profile_image" src="{{ url_for('static',
         filename='profile_images/' + user.profile_image) }}"
              alt="profile_image"
              width="180"
