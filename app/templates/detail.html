@@ -22,7 +22,7 @@
     {% endif %}
     {% for comment in post.comments %}
         <div class="comment">
-            <h3>{{ comment.users[0].name }}</h3>
+            <h3>{{ comment.author[0].name }}</h3>
             {{ comment.body }}
             <form action="http://localhost:5000/blogs/{{ post.slug }}" method="POST">
                 {% if current_user not in comment.liked_users %}

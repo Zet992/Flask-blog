@@ -102,7 +102,7 @@ class User(db.Model, UserMixin):
     roles = db.relationship("Role", secondary=roles_users,
                             backref=db.backref("users", lazy="dynamic"))
     comments = db.relationship("Comment", secondary=comments_users,
-                               backref=db.backref("users", lazy="dynamic"))
+                               backref=db.backref("author", lazy="dynamic"))
     profile_image = db.Column(db.String(140), default="default.png")
     rating = db.Column(db.Integer(), default=0)
 
