@@ -1,6 +1,8 @@
 venv/
+venv1/
 __pycache__/
 migrations/
+./idea
 *.png
 *.jpeg
 *.jpg

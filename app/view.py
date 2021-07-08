@@ -55,59 +55,13 @@ def post_detail(slug):
         dislike_id = request.form.get("dislike")
 
         if body:
-            try:
-                comment = Comment(body=body)
-                user.comments.append(comment)
-                post.comments.append(comment)
-                db.session.add(comment)
-                db.session.commit()
-            except Exception as err:
-                print(err)
+            create_comment(user, post, body)
 
-        else:
-            if like_id is not None:
-                try:
-                    comment = (Comment
-                               .query
-                               .filter(Comment.id == int(like_id)).first())
-                    author = comment.users[0]
+        elif like_id:
+            like_comment(user, like_id)
 
-                    if user in comment.liked_users:
-                        flash("You have liked")
-                        return render_template("detail.html", post=post)
-
-                    author.rating += 1
-                    comment.rating += 1
-                    comment.liked_users.append(user)
-                    if user in comment.disliked_users:
-                        author.rating += 1
-                        comment.rating += 1
-                        comment.disliked_users.remove(user)
-                    db.session.commit()
-                except Exception as err:
-                    print(err)
-
-            elif dislike_id is not None:
-                try:
-                    comment = (Comment
-                               .query
-                               .filter(Comment.id == int(dislike_id)).first())
-                    author = comment.users[0]
-
-                    if user in comment.disliked_users:
-                        flash("You have disliked")
-                        return render_template("detail.html", post=post)
-
-                    author.rating -= 1
-                    comment.rating -= 1
-                    comment.disliked_users.append(user)
-                    if user in comment.liked_users:
-                        author.rating -= 1
-                        comment.rating -= 1
-                        comment.liked_users.remove(user)
-                    db.session.commit()
-                except Exception as err:
-                    print(err)
+        elif dislike_id:
+            dislike_comment(user, dislike_id)
 
     return render_template("detail.html", post=post)
 
@@ -159,3 +113,58 @@ def edit_post(slug):
 @app.errorhandler(404)
 def page_not_found(e):
     return render_template("404.html"), 404
+
+
+def create_comment(user, post, body):
+    try:
+        comment = Comment(body=body)
+        user.comments.append(comment)
+        post.comments.append(comment)
+        db.session.add(comment)
+        db.session.commit()
+    except Exception as err:
+        print(err)
+
+
+def like_comment(user, comment_id):
+    try:
+        comment = (Comment
+                   .query
+                   .filter(Comment.id == int(comment_id)).first())
+        author = comment.author[0]
+
+        if user in comment.liked_users:
+            return None
+
+        author.rating += 1
+        comment.rating += 1
+        comment.liked_users.append(user)
+        if user in comment.disliked_users:
+            author.rating += 1
+            comment.rating += 1
+            comment.disliked_users.remove(user)
+        db.session.commit()
+    except Exception as err:
+        print(err)
+
+
+def dislike_comment(user, comment_id):
+    try:
+        comment = (Comment
+                   .query
+                   .filter(Comment.id == int(comment_id)).first())
+        author = comment.author[0]
+
+        if user in comment.disliked_users:
+            return None
+
+        author.rating -= 1
+        comment.rating -= 1
+        comment.disliked_users.append(user)
+        if user in comment.liked_users:
+            author.rating -= 1
+            comment.rating -= 1
+            comment.liked_users.remove(user)
+        db.session.commit()
+    except Exception as err:
+        print(err)
