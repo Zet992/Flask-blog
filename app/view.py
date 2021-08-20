@@ -73,15 +73,13 @@ def user_detail(slug):
         if "file" not in request.files:
             flash("No file part")
             return redirect(request.url)
+
         file = request.files["file"]
         if file.filename == "":
             flash("No selected file")
             return redirect(request.url)
-        if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
-            user.profile_image = filename
-            db.session.commit()
+        elif file and allowed_file(file.filename):
+            change_profile_image(file, user)
 
     filename = os.path.join(app.config["UPLOAD_FOLDER"], user.profile_image)
     return render_template("user_detail.html", user=user, filename=filename)
@@ -168,3 +166,29 @@ def dislike_comment(user, comment_id):
         db.session.commit()
     except Exception as err:
         print(err)
+
+
+def selection_filename(filename):
+    images = [i.profile_image for i in User.query]
+    filename = secure_filename(filename)
+    if filename not in images:
+        return filename
+
+    name_and_format = filename.split(".")
+    for i in range(1, 10):
+        name_and_format[0] += str(i)
+        if ".".join(name_and_format) not in images:
+            filename = ".".join(name_and_format)
+            return filename
+        else:
+            name_and_format[0] = name_and_format[0][:-1]
+
+
+def change_profile_image(file, user):
+    filename = selection_filename(file.filename)
+    if user.profile_image != "default.png":
+        os.remove(app.config["UPLOAD_FOLDER"] + user.profile_image)
+
+    file.save(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+    user.profile_image = filename
+    db.session.commit()
