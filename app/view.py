@@ -17,7 +17,6 @@ def home_page():
 @app.route("/blogs")
 def blogs():
     search = request.args.get("search")
-
     page = request.args.get('page')
 
     if page and page.isdigit() and int(page) > 0:
@@ -88,8 +87,20 @@ def user_detail(slug):
 @app.route("/blogs/tag/<name>")
 def tag_detail(name):
     tag = Tag.query.filter(Tag.name==name).first_or_404()
-    posts = tag.posts.all()
-    return render_template("tag_view.html", tag=tag, posts=posts)
+    posts = tag.posts
+    page = request.args.get('page')
+
+    if page and page.isdigit() and int(page) > 0:
+        page = int(page)
+    else:
+        page = 1
+    pages = posts.paginate(page=page, per_page=4)
+
+    for post in pages.items:
+        if len(post.body.strip()) > 370:
+            post.body = post.body[:370] + "..."
+
+    return render_template("tag_view.html", tag=tag, posts=posts, pages=pages)
 
 
 @app.route("/blogs/<slug>/edit", methods=["POST", "GET"])
