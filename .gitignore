@@ -2,7 +2,7 @@ venv/
 venv1/
 __pycache__/
 migrations/
-./idea
+.idea
 *.png
 *.jpeg
 *.jpg
