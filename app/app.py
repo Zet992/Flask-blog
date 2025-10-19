@@ -2,7 +2,6 @@ from flask import Flask, redirect, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 
 from flask_migrate import Migrate
-from flask_script import Manager
 
 from flask_admin import Admin, AdminIndexView
 from flask_admin.contrib.sqla import ModelView
@@ -23,7 +22,6 @@ app.config.from_object(Configuration)
 db = SQLAlchemy(app)
 
 migrate = Migrate(app, db)
-manager = Manager(app)
 
 from models import Post, Tag, User, Role, Comment
 
